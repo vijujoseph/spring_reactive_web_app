@@ -69,7 +69,7 @@ public class ProductController {
 	}
 	
 	
-	@DeleteMapping("/delete/all")
+	@DeleteMapping("/delete")
 	public Mono<ResponseEntity<Void>> removeProducts() {
 		return productRepository.deleteAll()
 				.map(product -> ResponseEntity.ok(product))
