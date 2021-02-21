@@ -1,0 +1,87 @@
+Mongo DB:
+Database
+Collections (table)
+Documents (row)
+Fields (columns)
+ID
+
+@Document(collection="airplanes") (@Entity)
+@Id
+@Field(name="seats")
+@Transient - exclude properties persist at all
+
+@Indexed - basically for indexing
+@Indexed(direction=IndexDirection.ASCENDING, unique=false)
+@Textindex - full text search
+@CompoundIndex(def="{'model':1,'heavy':-1}")
+
+@DbRef - kind of join
+
+
+MongoFilterOperator:
+is/ne
+lt/lte
+gt/gte
+in
+exists
+regex
+
+MongoTemplate - to perform curd operation, extremly powerful
+MongoTemplate template =
+template.find()
+template.findAll()
+template.findOne()
+template.count()
+
+serviceQuery.addCriteria(
+        new Criteria().andOperator(
+                Criteria.where(Constant.PROPERTY_ID).is(Long.parseLong(propertyId)),
+                Criteria.where(Constant.COMMON_IS_ACTIVE).is(true)
+        )
+);
+
+serviceQuery.addCriteria(
+        new Criteria().orOperator(
+                Criteria.where(Constant.PROPERTY_ID).is(Long.parseLong(propertyId)),
+                Criteria.where(Constant.COMMON_IS_ACTIVE).is(true)
+        )
+);
+
+serviceQuery.addCriteria(Criteria.where(Constant.COMMON_IS_ACTIVE).is(true));
+.with(Sort.by(Sort.Direction.ASC, "field"))
+.with(PageRequest.of(1,20));
+
+mongoTemplate.find(query, Service.class)
+
+Insert - for new documents
+Save - update of documents
+
+Sample APIs:
+GET: http://localhost:8080/products/?desc=Samsung
+GET: http://localhost:8080/products/all
+POST: http://localhost:8080/products
+{
+  "id": "6026a35e6d786a0d43058f181112",
+  "name": "APP",
+  "price": 10.00,
+  "description": "description 111",
+  "shortTitle": "shortTitle 111"
+}
+
+GET: http://localhost:8080/products/getByPriceMoreThan50 
+GET: http://localhost:8080/products/getByPriceMoreThan50WithPagination
+
+Sample Update:
+Query query = new Query(Criteria.where(Constant.COMMON_ID).is(Long.parseLong(serviceId)));
+Update update = new Update().set(Constant.SERVICE_STATUS, status);
+mongoOperations.findAndModify(query, update, Services.class);
+return true;
+
+Batch Insert or Update:
+updateMulti()
+InsertAll()
+Remove:
+1. find document and .remove()
+2. find all documents and use .findAllAndRemove()
+3. dropCollection
+
