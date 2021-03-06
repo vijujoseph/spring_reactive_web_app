@@ -104,4 +104,13 @@ public class ProductController {
 				.map(result ->  new ResponseEntity<>(ResponseDto.success(result), HttpStatus.OK))
 				.defaultIfEmpty(new ResponseEntity<>(ResponseDto.fail("Not Found", String.class), HttpStatus.NOT_FOUND));
 	}
+	
+	@PostMapping("/update/{id}")
+	@ResponseStatus(HttpStatus.CREATED)
+	public Mono<ResponseEntity<ResponseDto<Product>>> updateCustomerInfo(
+			@RequestBody Product product, @PathVariable String id) throws Exception {
+		return Mono.just(productService.updateProductDetails(product, id))
+				.map(result ->  new ResponseEntity<>(ResponseDto.success(result), HttpStatus.OK))
+				.defaultIfEmpty(new ResponseEntity<>(ResponseDto.fail("Not Found", String.class), HttpStatus.NOT_FOUND));
+	}
 }
